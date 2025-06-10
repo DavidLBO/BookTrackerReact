@@ -52,6 +52,12 @@
       "username": "DVD",
       "password": "123456",
       "email": "david@gmail.com"
+    },
+    {
+      "id": "45cd",
+      "username": "David",
+      "password": "654321",
+      "email": "davidlopes@gmail.com"
     }
   ]
 }
