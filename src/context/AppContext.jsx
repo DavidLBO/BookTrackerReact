@@ -1,51 +1,65 @@
-// src/context/AppContext.js
 import { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import api from '../services/api';
 
 const AppContext = createContext();
 
 const initialState = {
-  items: [],
+  books: [],
   loading: false,
   error: null,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_ITEMS_REQUEST':
+    case 'FETCH_BOOKS_REQUEST':
       return { ...state, loading: true, error: null };
-    case 'FETCH_ITEMS_SUCCESS':
-      return { ...state, loading: false, items: action.payload };
-    case 'FETCH_ITEMS_FAILURE':
+    case 'FETCH_BOOKS_SUCCESS':
+      return { ...state, loading: false, books: action.payload };
+    case 'FETCH_BOOKS_FAILURE':
       return { ...state, loading: false, error: action.payload };
-    case 'ADD_ITEM':
-      return { ...state, items: [...state.items, action.payload] };
+    case 'ADD_BOOK':
+      return { ...state, books: [...state.books, action.payload] };
+    case 'DELETE_BOOK':
+      return {
+        ...state,
+        books: state.books.filter(book => book.id !== action.payload),
+      };
     default:
       return state;
   }
 };
 
-export const AppProvider = ({ children }) => {
+export const AppProvider = ({ children, user }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Memoiza fetchItems para evitar mudança de referência e loop infinito
-  const fetchItems = useCallback(async () => {
-    dispatch({ type: 'FETCH_ITEMS_REQUEST' });
+  const fetchBooks = useCallback(async () => {
+    dispatch({ type: 'FETCH_BOOKS_REQUEST' });
     try {
-      const response = await api.get('/items');
-      dispatch({ type: 'FETCH_ITEMS_SUCCESS', payload: response.data });
+      const url = user ? `/books?userId=${user.id}` : '/books';
+      const response = await api.get(url);
+      dispatch({ type: 'FETCH_BOOKS_SUCCESS', payload: response.data });
     } catch (error) {
-      dispatch({ type: 'FETCH_ITEMS_FAILURE', payload: error.message });
+      dispatch({ type: 'FETCH_BOOKS_FAILURE', payload: error.message });
     }
-  }, []);
+  }, [user]);
 
-  const addItem = async (item) => {
+  const addBook = async (book) => {
     try {
-      const response = await api.post('/items', {
-        ...item,
+      const response = await api.post('/books', {
+        ...book,
         createdAt: new Date().toISOString(),
       });
-      dispatch({ type: 'ADD_ITEM', payload: response.data });
+      dispatch({ type: 'ADD_BOOK', payload: response.data });
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  const deleteBook = async (id) => {
+    try {
+      await api.delete(`/books/${id}`);
+      dispatch({ type: 'DELETE_BOOK', payload: id });
       return { success: true };
     } catch (error) {
       return { success: false, error: error.message };
@@ -53,11 +67,11 @@ export const AppProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
+    fetchBooks();
+  }, [fetchBooks]);
 
   return (
-    <AppContext.Provider value={{ state, fetchItems, addItem }}>
+    <AppContext.Provider value={{ state, fetchBooks, addBook, deleteBook }}>
       {children}
     </AppContext.Provider>
   );

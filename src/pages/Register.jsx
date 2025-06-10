@@ -1,24 +1,44 @@
-// src/pages/Register/Register.jsx
-import { useAppContext } from '../context/AppContext';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../components/RegisterForm';
-import styles from './Register.module.css';
+import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
-  const { addItem } = useAppContext();
+  const { user } = useAuth();
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (formData) => {
-    const result = await addItem(formData);
-    if (result.success) {
-      alert('Cadastro realizado com sucesso!');
-    } else {
-      alert(`Erro: ${result.error}`);
+  // Redireciona se já estiver logado
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  const handleRegister = async ({ name, email, password }) => {
+    setError(null);
+    try {
+      const existingUser = await api.get('/users', {
+        params: { username: name },
+      });
+      if (existingUser.data.length > 0) {
+        setError('Nome de usuário já está em uso');
+        return;
+      }
+
+      await api.post('/users', { username: name, password, email });
+      navigate('/login');
+    } catch (err) {
+      setError('Erro ao registrar usuário');
     }
   };
 
   return (
-    <div className={styles.registerPage}>
-      <h1>Cadastro</h1>
-      <RegisterForm onSubmit={handleSubmit} />
+    <div>
+      <h1>Registrar Usuário</h1>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <RegisterForm onSubmit={handleRegister} />
     </div>
   );
 };

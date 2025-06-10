@@ -1,10 +1,57 @@
 {
-  "items": [
+  "books": [
     {
-      "id": 1,
-      "name": "Exemplo Inicial",
-      "email": "exemplo@teste.com",
-      "createdAt": "2023-05-15T12:00:00Z"
+      "id": "1",
+      "title": "Título do livro",
+      "author": "Autor",
+      "category": "Categoria",
+      "rating": 4,
+      "review": "Minha resenha",
+      "createdAt": "2025-06-10T10:00:00Z",
+      "userId": "1"
+    },
+    {
+      "id": "1edc",
+      "title": "LivroTop",
+      "author": "Fulano",
+      "category": "Romance",
+      "rating": 5,
+      "review": "Um livro bacana que eu li uma vez  quando estava entediado e atoa",
+      "createdAt": "2025-06-10T21:58:44.113Z",
+      "userId": "cfaa"
+    },
+    {
+      "id": "777c",
+      "title": "LivroRuim",
+      "author": "David",
+      "category": "Terror",
+      "rating": 1,
+      "review": "Este livro foi um dos piores que já li, me arrependo de ter gasto meu tempo com este aqui.",
+      "createdAt": "2025-06-10T22:20:46.226Z",
+      "userId": "cfaa"
+    },
+    {
+      "id": "db66",
+      "title": "Livro com Titulo",
+      "author": "Eu",
+      "category": "Auto Ajuda",
+      "rating": 3,
+      "review": "Livro bacana",
+      "userId": "1",
+      "createdAt": "2025-06-10T22:44:35.691Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "usuario1",
+      "password": "senha1"
+    },
+    {
+      "id": "cfaa",
+      "username": "DVD",
+      "password": "123456",
+      "email": "david@gmail.com"
     }
   ]
 }
