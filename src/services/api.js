@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.API_URL, // json-server roda na porta 3001 por padrão
+  baseURL: import.meta.env.VITE_API_URL, // json-server roda na porta 3000
   timeout: 5000,
 });
 

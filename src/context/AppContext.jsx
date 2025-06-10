@@ -1,5 +1,5 @@
 // src/context/AppContext.js
-import { createContext, useContext, useReducer, useEffect } from 'react';
+import { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import api from '../services/api';
 
 const AppContext = createContext();
@@ -28,7 +28,8 @@ const reducer = (state, action) => {
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const fetchItems = async () => {
+  // Memoiza fetchItems para evitar mudança de referência e loop infinito
+  const fetchItems = useCallback(async () => {
     dispatch({ type: 'FETCH_ITEMS_REQUEST' });
     try {
       const response = await api.get('/items');
@@ -36,13 +37,13 @@ export const AppProvider = ({ children }) => {
     } catch (error) {
       dispatch({ type: 'FETCH_ITEMS_FAILURE', payload: error.message });
     }
-  };
+  }, []);
 
   const addItem = async (item) => {
     try {
       const response = await api.post('/items', {
         ...item,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
       dispatch({ type: 'ADD_ITEM', payload: response.data });
       return { success: true };
@@ -53,7 +54,7 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [fetchItems]);
 
   return (
     <AppContext.Provider value={{ state, fetchItems, addItem }}>
