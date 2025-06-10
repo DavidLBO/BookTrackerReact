@@ -1,6 +1,6 @@
 // src/components/forms/RegisterForm/RegisterForm.jsx
 import { useState } from 'react';
-import FormInput from '../FormInput/FormInput';
+import FormInput from './FormInput';
 import styles from './RegisterForm.module.css';
 
 const RegisterForm = ({ onSubmit }) => {

@@ -1,6 +1,6 @@
 // src/pages/Register/Register.jsx
-import { useAppContext } from '../../context/AppContext';
-import RegisterForm from '../../components/RegisterForm';
+import { useAppContext } from '../context/AppContext';
+import RegisterForm from '../components/RegisterForm';
 import styles from './Register.module.css';
 
 const Register = () => {

@@ -1,7 +1,7 @@
 // src/components/items/ItemList/ItemList.jsx
 import { useEffect } from 'react';
-import { useAppContext } from '../../../context/AppContext';
-import ItemCard from '../ItemCard/ItemCard';
+import { useAppContext } from '../context/AppContext';
+import ItemCard from './ItemCard';
 import styles from './ItemList.module.css';
 
 const ItemList = () => {

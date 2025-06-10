@@ -1,5 +1,5 @@
 // src/pages/Items/Items.jsx
-import ItemList from '../../components/ItemList';
+import ItemList from '../components/ItemList';
 import styles from './Items.module.css';
 
 const Items = () => {
