@@ -1,0 +1,10 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Exemplo Inicial",
+      "email": "exemplo@teste.com",
+      "createdAt": "2023-05-15T12:00:00Z"
+    }
+  ]
+}
